@@ -3,6 +3,9 @@ Tool to flash bricked Subaru Hitachi ECUs
 
 ### Supported devices
 - WA12212920WWW / UJ20 (M32150)
+  - Subaru Impreza 99-00 Turbo
+  - Subaru Legacy B4 Twin Turbo rev. A/B/C
+  - Subaru Forester Turbo 99-00
 
 ### Future supported devices
 - WA12212930WWW / UJ30 (M321xx)

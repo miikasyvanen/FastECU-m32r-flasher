@@ -24,7 +24,7 @@ Tool to flash bricked Subaru Hitachi ECUs
 - Connect wire to VPP (TP13 on bottom of PCB) to be ready to connect +12v
 - Connect wire to MOD1 (TP92 on bottom of PCB or HL06 on top) to be ready to connect +12v
 
-Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "three dot"-button next to "Write Flash"-button. Press "Write Flash". When message box appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)
+Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "Select File"-button and click "Write Flash"-button to start kernel upload. When messagebox appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)
 
 ### WA12212930WWW / UJ30
 - Connect +12v and GND to ECU power pins (IGN SW + CONTROL POWER and GND) ready to apply power
@@ -32,4 +32,4 @@ Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD
 - Connect wire to VPP TP16 on bottom of PCB or some via on top/bottom of PCB to be ready to connect +12v
 - Connect wire to MOD1 (HL14 on top/bottom of PCB) to be ready to connect +12v
 
-Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "three dot"-button next to "Write Flash"-button. Press "Write Flash". When message box appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)
+Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "Select File"-button and click "Write Flash"-button to start kernel upload. When messagebox appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)

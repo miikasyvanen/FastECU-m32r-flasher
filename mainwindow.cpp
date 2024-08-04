@@ -11,11 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     set_progressbar_value(0);
 
-    ui->mcuModelComboBox->addItem("WA12212920WWW (M32150)");
-    ui->mcuModelComboBox->addItem("WA12212930WWW (M321xx) in progress");
+    ui->mcuModelComboBox->addItem("WA12212920WWW");
+    ui->mcuModelComboBox->addItem("WA12212930WWW");
     ui->mcuModelComboBox->addItem("WA12212970WWW (M32170) in progress");
 
-    ui->writeFlashLineEdit->setText("./roms/0D04680805.bin");
+    //ui->writeFlashLineEdit->setText("./roms/0D04680805.bin");
+
     ui->baudRateComboBox->addItem("4800");
     ui->baudRateComboBox->addItem("9600");
     ui->baudRateComboBox->addItem("19200");
@@ -187,10 +188,10 @@ QString MainWindow::requestVersionWithSync()
         send_logwindow_message("Port open, syncing, please wait...", true, true);
         cmd_code.clear();
         cmd_code.append((uint8_t)0x00);
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 50; i++)
         {
-            serial->write_data(cmd_code, true);
-            delay(40);
+            serial->write_data(cmd_code, false);
+            delay(30);
         }
         send_logwindow_message("Sent: " + parse_message_to_hex(cmd_code), true, true);
         delay(250);
@@ -202,7 +203,7 @@ QString MainWindow::requestVersionWithSync()
         cmd_code.append((uint8_t)M16C_BL_CMD_CODE_VERSION);
         serial->write_data(cmd_code, true);
         send_logwindow_message("Sent: " + parse_message_to_hex(cmd_code), true, true);
-        delay(250);
+        delay(1000);
         received = serial->read_data();
         send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
     }
@@ -289,10 +290,15 @@ bool MainWindow::writeFileToFlash()
     int baudRateComboBoxIndex = ui->baudRateComboBox->currentIndex();
     int parityComboBoxIndex = ui->parityComboBox->currentIndex();
 
-    if (ui->mcuModelComboBox->currentIndex() == 0)
+    if (ui->mcuModelComboBox->currentText() == "WA12212920WWW")
     {
         UJ20_Unbrick *uj20_unbrick = new UJ20_Unbrick(this);
         uj20_unbrick->unbrick_uj20();
+    }
+    if (ui->mcuModelComboBox->currentText() == "WA12212930WWW")
+    {
+        UJ30_Unbrick *uj30_unbrick = new UJ30_Unbrick(this);
+        uj30_unbrick->unbrick_uj30();
     }
 
     serial->close_serialport();

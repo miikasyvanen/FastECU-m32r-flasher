@@ -13,6 +13,7 @@
 #include <serialport.h>
 
 #include <modules/uj20_unbrick.h>
+#include <modules/uj30_unbrick.h>
 
 #define STATUS_SUCCESS	0x00
 #define STATUS_ERROR	0x01

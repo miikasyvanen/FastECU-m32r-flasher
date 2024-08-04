@@ -96,7 +96,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>...</string>
+           <string>Select File</string>
           </property>
          </widget>
         </item>
@@ -139,7 +139,7 @@
         <item>
          <widget class="QPushButton" name="writeFlashFileDialogButton">
           <property name="text">
-           <string>...</string>
+           <string>Select File</string>
           </property>
          </widget>
         </item>

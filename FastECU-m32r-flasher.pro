@@ -12,11 +12,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     modules/uj20_unbrick.cpp \
+    modules/uj30_unbrick.cpp \
     serialport.cpp
 
 HEADERS += \
     mainwindow.h \
     modules/uj20_unbrick.h \
+    modules/uj30_unbrick.h \
     serialport.h
 
 FORMS += \

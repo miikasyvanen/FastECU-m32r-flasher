@@ -36,6 +36,7 @@ bool UJ20_Unbrick::sendKernelToRam()
 
     emit set_baudrate_combobox_index(4);
     emit set_parity_combobox_index(1);
+    serial->close_serialport();
 
     QFile file_kernel(filename_kernel);
 
@@ -46,6 +47,8 @@ bool UJ20_Unbrick::sendKernelToRam()
         return STATUS_ERROR;
     }
     QByteArray kerneldata = file_kernel.readAll();
+    file_kernel.close();
+
     int kernelfilesize = kerneldata.length();
 
     emit send_logwindow_message("Initialising serial port, please wait...", true, true);
@@ -58,7 +61,7 @@ bool UJ20_Unbrick::sendKernelToRam()
     }
     else
     {
-        emit send_logwindow_message("Uploading kernel, please wait...", true, true);
+        emit send_logwindow_message("Uploading UJ20 kernel, please wait...", true, true);
         qDebug() << "Uploading kernel, please wait...";
         for (int i = 0; i < kernelfilesize; i++)
         {
@@ -74,6 +77,8 @@ bool UJ20_Unbrick::sendKernelToRam()
     }
 
     emit set_progressbar_value(0);
+
+    //serial->close_serialport();
 
     emit set_baudrate_combobox_index(baudRateComboBoxIndex);
     emit set_parity_combobox_index(parityComboBoxIndex);
@@ -144,14 +149,11 @@ bool UJ20_Unbrick::sendFileToFlash()
         serial->write_data(output, true);
         delay(500);
 
-		emit send_logwindow_message(".", true, false);
-        qDebug() << "." + parse_message_to_hex(received);
+        emit send_logwindow_message("", true, false);
         received.clear();
         for (int i = 0; i < 20; i++)
         {
             received.append(serial->read_data());
-            //emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
-            //qDebug() << "Received: " + parse_message_to_hex(received);
             emit send_logwindow_message(".", false, false);
             qDebug() << ".";
             if (received != "")
@@ -160,14 +162,18 @@ bool UJ20_Unbrick::sendFileToFlash()
                 {
                     if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x42)
                     {
+                        emit send_logwindow_message("", false, true);
                         emit send_logwindow_message("Flash erase in progress, please wait...", true, true);
                         qDebug() << "Flash erase in progress, please wait...";
                         break;
                     }
                     else
                     {
+                        emit send_logwindow_message("", false, true);
                         emit send_logwindow_message("Flash erase cmd failed!", true, true);
                         qDebug() << "Flash erase cmd failed!";
+                        emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
+                        qDebug() << "Received: " + parse_message_to_hex(received);
                         return STATUS_ERROR;
                     }
                 }
@@ -176,8 +182,11 @@ bool UJ20_Unbrick::sendFileToFlash()
         }
         if (received == "")
         {
+            emit send_logwindow_message("", false, true);
             emit send_logwindow_message("Flash erase cmd failed!", true, true);
             qDebug() << "Flash erase cmd failed!";
+            emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
+            qDebug() << "Received: " + parse_message_to_hex(received);
             serial->close_serialport();
 
             emit set_baudrate_combobox_index(baudRateComboBoxIndex);
@@ -185,26 +194,31 @@ bool UJ20_Unbrick::sendFileToFlash()
             return STATUS_ERROR;
         }
     }
+    emit send_logwindow_message("", true, false);
     received.clear();
     for (int i = 0; i < 20; i++)
     {
         received.append(serial->read_data());
-        emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
-        qDebug() << "Received: " + parse_message_to_hex(received);
+        emit send_logwindow_message(".", false, false);
+        qDebug() << ".";
         if (received != "")
         {
             if (received.length() > 6)
             {
                 if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x52)
                 {
+                    emit send_logwindow_message("", false, true);
                     emit send_logwindow_message("Flash erased!", true, true);
                     qDebug() << "Flash erased!";
                     break;
                 }
                 else
                 {
+                    emit send_logwindow_message("", false, true);
                     emit send_logwindow_message("Flash erase failed!", true, true);
                     qDebug() << "Flash erase failed!";
+                    emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
+                    qDebug() << "Received: " + parse_message_to_hex(received);
                     return STATUS_ERROR;
                 }
             }
@@ -220,6 +234,8 @@ bool UJ20_Unbrick::sendFileToFlash()
         return STATUS_ERROR;
     }
     QByteArray flashdata = file_flash.readAll();
+    file_flash.close();
+
     int flashfilesize = flashdata.length();
     dataaddr = 0;
     int blocksize = 128;
@@ -255,27 +271,36 @@ bool UJ20_Unbrick::sendFileToFlash()
         qDebug() << "Sent: " + parse_message_to_hex(output);
         delay(5);
         received.clear();
-        for (int i = 0; i < 500; i++)
+        if (output.at(5) == 0x61)
         {
-            received.append(serial->read_data());
-            if (received.length() > 6)
+            for (int i = 0; i < 500; i++)
             {
-                if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x52)
+                received.append(serial->read_data());
+                if (received.length() > 6)
                 {
-                    emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
-                    qDebug() << "Received: " + parse_message_to_hex(received);
-                    break;
+                    if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x52)
+                    {
+                        emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
+                        qDebug() << "Received: " + parse_message_to_hex(received);
+                        break;
+                    }
+                    else
+                    {
+                        emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
+                        qDebug() << "Received: " + parse_message_to_hex(received);
+                        emit send_logwindow_message("Block flash failed!", true, true);
+                        qDebug() << "Block flash failed!";
+                        return STATUS_ERROR;
+                    }
                 }
-                else
-                {
-                    emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
-                    qDebug() << "Received: " + parse_message_to_hex(received);
-                    emit send_logwindow_message("Block flash failed!", true, true);
-                    qDebug() << "Block flash failed!";
-                    return STATUS_ERROR;
-                }
+                delay(50);
             }
-            delay(50);
+        }
+        else
+        {
+            emit send_logwindow_message("File written to flash, please wait...", true, true);
+            delay(5);
+            emit send_logwindow_message("Done! Please remove VPP voltage, power cycle ECU and request SSM Init to .", true, true);
         }
         if (received == "")
         {

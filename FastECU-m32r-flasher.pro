@@ -28,3 +28,7 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    images/UJ20_bottom_mod1_vpp.jpg \
+    images/UJ30_top_mod1_vpp.jpg

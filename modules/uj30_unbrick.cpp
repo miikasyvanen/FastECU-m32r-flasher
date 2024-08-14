@@ -160,7 +160,8 @@ bool UJ30_Unbrick::sendFileToFlash()
             {
                 if (received.length() > 6)
                 {
-                    if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x42)
+                    qDebug() << "Received " + QString::number(received.length()) + " bytes: " + parse_message_to_hex(received);
+                    if ((uint8_t)received.at(0) == 0x80 && (uint8_t)received.at(1) == 0xf0 && (uint8_t)received.at(2) == 0x10 && (uint8_t)received.at(3) == 0x02 && (uint8_t)received.at(4) == 0xef && (uint8_t)received.at(5) == 0x42)
                     {
                         emit send_logwindow_message("", false, true);
                         emit send_logwindow_message("Flash erase in progress, please wait...", true, true);
@@ -178,14 +179,13 @@ bool UJ30_Unbrick::sendFileToFlash()
                     }
                 }
             }
-            //serial->write_data(output, true);
             delay(500);
         }
         if (received == "")
         {
             emit send_logwindow_message("", false, true);
-            emit send_logwindow_message("Flash erase cmd failed!", true, true);
-            qDebug() << "Flash erase cmd failed!";
+            emit send_logwindow_message("Flash erase cmd failed, no answer from ECU!", true, true);
+            qDebug() << "Flash erase cmd failed, no answer from ECU!";
             emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
             qDebug() << "Received: " + parse_message_to_hex(received);
             serial->close_serialport();
@@ -206,7 +206,8 @@ bool UJ30_Unbrick::sendFileToFlash()
         {
             if (received.length() > 6)
             {
-                if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x52)
+                qDebug() << "Received " + QString::number(received.length()) + " bytes: " + parse_message_to_hex(received);
+                if ((uint8_t)received.at(0) == 0x80 && (uint8_t)received.at(1) == 0xf0 && (uint8_t)received.at(2) == 0x10 && (uint8_t)received.at(3) == 0x02 && (uint8_t)received.at(4) == 0xef && (uint8_t)received.at(5) == 0x52)
                 {
                     emit send_logwindow_message("", false, true);
                     emit send_logwindow_message("Flash erased!", true, true);
@@ -278,7 +279,7 @@ bool UJ30_Unbrick::sendFileToFlash()
                 received.append(serial->read_data());
                 if (received.length() > 6)
                 {
-                    if (received.at(0) == 0x80 && received.at(1) == 0xf0 && received.at(2) == 0x10 && received.at(3) == 0x02 && received.at(4) == 0xEF && received.at(5) == 0x52)
+                    if ((uint8_t)received.at(0) == 0x80 && (uint8_t)received.at(1) == 0xf0 && (uint8_t)received.at(2) == 0x10 && (uint8_t)received.at(3) == 0x02 && (uint8_t)received.at(4) == 0xef && (uint8_t)received.at(5) == 0x52)
                     {
                         emit send_logwindow_message("Received: " + parse_message_to_hex(received), true, true);
                         qDebug() << "Received: " + parse_message_to_hex(received);
@@ -302,7 +303,7 @@ bool UJ30_Unbrick::sendFileToFlash()
             delay(5);
             emit send_logwindow_message("Done! Please remove VPP voltage, power cycle ECU and request SSM Init to .", true, true);
         }
-        if (received == "")
+        if ((uint8_t)output.at(5) != 0x69 && received == "")
         {
             emit send_logwindow_message("Flash failed!", true, true);
             qDebug() << "Flash failed!";

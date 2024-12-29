@@ -1,7 +1,7 @@
 # FastECU-m32r-flasher
 Tool to flash bricked Subaru Hitachi ECUs
 
-### Supported devices
+### Supported ECUs
 - WA12212920WWW / UJ20
   - Subaru Impreza MY99-00 Turbo
   - Subaru Legacy B4 Twin Turbo rev. A/B/C
@@ -10,7 +10,7 @@ Tool to flash bricked Subaru Hitachi ECUs
 - WA12212930WWW / UJ30
   - Subaru Legacy 2.0 MY99 N/A
 
-### Future supported devices
+### Future supported ECUs
 - WA12212940WWW / UJ40 (K-Line)
 - WA12212970WWW / UJ70 (K-Line)
 - WA12212970WWW / UJ70 (CAN)

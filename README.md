@@ -27,7 +27,8 @@ Tool to flash bricked Subaru Hitachi ECUs
 
 Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "Select File"-button and click "Write Flash"-button to start kernel upload. When messagebox appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)
 
-[UJ20 MOD1 and VPP testpoints](https://github.com/miikasyvanen/FastECU-m32r-flasher/blob/development/images/uj20_bottom_mod1_vpp.jpg)
+[UJ20 MOD1 and VPP testpoints](https://github.com/miikasyvanen/FastECU-m32r-flasher/blob/main/images/uj20_bottom_mod1_vpp.jpg)
+[UJ20 ECU connector](https://github.com/miikasyvanen/FastECU-m32r-flasher/blob/main/images/uj20_ecu_connector.jpg)
 
 ### WA12212930WWW / UJ30
 - Connect +12v and GND to ECU power pins (IGN SW + CONTROL POWER and GND) ready to apply power
@@ -37,4 +38,4 @@ Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD
 
 Run software and apply power to ECU. Connect VPP wire to +12v and after that MOD1 wire to +12v. Select file to upload with "Select File"-button and click "Write Flash"-button to start kernel upload. When messagebox appears, remove MOD1 wire from +12v and press ok. Take a zip from coffee and watch your ECU to come alive again :)
 
-[UJ30 MOD1 and VPP testpoints](https://github.com/miikasyvanen/FastECU-m32r-flasher/blob/development/images/uj30_top_mod1_vpp.jpg)
+[UJ30 MOD1 and VPP testpoints](https://github.com/miikasyvanen/FastECU-m32r-flasher/blob/main/images/uj30_top_mod1_vpp.jpg)
